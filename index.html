@@ -127,5 +127,12 @@
         <a href="English/index.html" class="btn">Проект про Беларусь</a>
         
     </div>
+    <script>
+    // Убираем .html из URL если страница загружена с ним
+    if (window.location.pathname.endsWith('index.html')) {
+        var newPath = window.location.pathname.replace('index.html', '');
+        window.history.replaceState({}, document.title, newPath);
+    }
+    </script>
 </body>
 </html>
