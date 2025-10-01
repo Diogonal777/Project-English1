@@ -17,7 +17,7 @@
             margin: 0;
             padding: 0;
         }
-        
+
         body {
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             min-height: 100vh;
@@ -29,7 +29,7 @@
             padding: 20px;
             text-align: center;
         }
-        
+
         .container {
             background-color: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -39,19 +39,19 @@
             max-width: 600px;
             width: 100%;
         }
-        
+
         h1 {
             font-size: 2.5rem;
             margin-bottom: 20px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
-        
+
         p {
             font-size: 1.2rem;
             line-height: 1.6;
             margin-bottom: 30px;
         }
-        
+
         .btn {
             display: inline-block;
             padding: 15px 30px;
@@ -65,35 +65,35 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             margin: 10px;
         }
-        
+
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
             background: linear-gradient(45deg, #F09819, #FF512F);
         }
-        
+
         .flags {
             display: flex;
             justify-content: center;
             gap: 20px;
             margin-top: 30px;
         }
-        
+
         .flag {
             width: 100px;
             height: 60px;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        
+
         .flag-red {
             background: linear-gradient(to bottom, #D22730 50%, #D22730 50%);
         }
-        
+
         .flag-green {
             background: linear-gradient(to bottom, #00A550 50%, #00A550 50%);
         }
-        
+
         .flag-white {
             background-color: white;
             display: flex;
@@ -102,16 +102,16 @@
             color: #333;
             font-weight: bold;
         }
-        
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 2rem;
             }
-            
+
             p {
                 font-size: 1rem;
             }
-            
+
             .btn {
                 padding: 12px 24px;
                 font-size: 1rem;
@@ -123,16 +123,17 @@
     <div class="container">
         <h1>Архив с проектами</h1>
         <p></p>
-        
-        <a href="English/index.html" class="btn">Проект про Беларусь</a>
-        
+        <a href="Story/index.html" class="btn">Интерактивные истории</a>
+        <a href="RandomFacts/index.html" class="btn">Рандомные факты</a>
+        <a href="English/index.html" class="btn">Школьный проект про Беларусь</a>
+        <a href="SpaceGallery/index.html" class="btn">Космичаская галерея</a>
     </div>
     <script>
-    // Убираем .html из URL если страница загружена с ним
-    if (window.location.pathname.endsWith('index.html')) {
-        var newPath = window.location.pathname.replace('index.html', '');
-        window.history.replaceState({}, document.title, newPath);
-    }
+        // Убираем .html из URL если страница загружена с ним
+        if (window.location.pathname.endsWith('index.html')) {
+            var newPath = window.location.pathname.replace('index.html', '');
+            window.history.replaceState({}, document.title, newPath);
+        }
     </script>
 </body>
 </html>

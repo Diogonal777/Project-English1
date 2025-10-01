@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интерактивнаые истории</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicons/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicons/site.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/favicons/favicon-192x192.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="story-selection" class="story-selection active">
+    <div class="story-overlay">
+        <h1>Выберите рассказ</h1>
+        <h3>Всё без картинок</h3>
+        <div class="story-buttons">
+            <button class="story-btn" data-story="basement">Побег из подвала</button>
+            <button class="story-btn" data-story="house">Тайна старого дома</button>
+            <button class="story-btn" data-story="island">Затерянный остров (самый интересный)</button>
+        </div>
+    </div>
+</div>
+
+<div id="game-container" class="hidden">
+    <div id="game-container">
+        <!-- Заголовок и прогресс -->
+        <header id="game-header">
+            <h1 id="scene-title">Интерактивныя истории</h1>
+            <div id="game-stats">
+                <span id="inventory">Инвентарь: пусто</span>
+                <span id="visited-count">Посещено: 0 мест</span>
+            </div>
+        </header>
+
+        <!-- Основное содержимое сцены -->
+        <main id="scene-content">
+            <div id="scene-image-container">
+                <img id="scene-image" src="" alt="Изображение сцены">
+            </div>
+            <div id="scene-text">
+                <p>Загрузка истории...</p>
+            </div>
+        </main>
+
+        <!-- Блок с выбором действий -->
+        <section id="choices-section">
+            <h3>Твой выбор:</h3>
+            <div id="choices-container">
+                <!-- Кнопки выбора будут генерироваться здесь -->
+            </div>
+        </section>
+
+        <!-- История посещений -->
+        <aside id="history-sidebar">
+            <h4>Путешествие:</h4>
+            <div id="visited-scenes"></div>
+        </aside>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
