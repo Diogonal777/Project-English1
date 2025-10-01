@@ -235,6 +235,22 @@ body {
     transform: translateY(0);
 }
 
+.menu-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+}
+
+.menu-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
 #history-sidebar {
     grid-area: sidebar;
     background: rgba(255, 255, 255, 0.05);
@@ -297,6 +313,62 @@ body {
         opacity: 1;
         transform: translate(-50%, -50%);
     }
+}
+
+.ending-item {
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ending-item.completed {
+    background: rgba(76, 175, 80, 0.2);
+    border-left: 3px solid #4caf50;
+}
+
+.ending-item.locked {
+    background: rgba(158, 158, 158, 0.2);
+    border-left: 3px solid #9e9e9e;
+    opacity: 0.6;
+}
+
+.ending-status {
+    font-weight: bold;
+}
+
+.ending-item.completed .ending-status {
+    color: #4caf50;
+}
+
+.ending-item.locked .ending-status {
+    color: #9e9e9e;
+}
+
+.ending-title {
+    font-size: 0.9em;
+}
+
+#achievements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.achievement-item {
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.achievement-item::before {
+    content: '🏆';
 }
 
 /* Базовые стили остаются прежними */
@@ -471,98 +543,6 @@ body.theme-secret {
 .theme-secret .choice-btn:hover {
     background: linear-gradient(135deg, #ce93d8 0%, #ba68c8 100%);
     box-shadow: 0 5px 15px rgba(186, 104, 200, 0.4);
-}
-
-/* ===== ЭФФЕКТЫ ДЛЯ КОНЦОВОК ===== */
-
-/* Падающие звезды для хорошей концовки */
-.ending-effects.stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 999;
-}
-
-.star {
-    position: absolute;
-    width: 2px;
-    height: 20px;
-    background: linear-gradient(to bottom, transparent, #ffffff);
-    animation: fall 3s linear infinite;
-}
-
-@keyframes fall {
-    0% {
-        transform: translateY(-100px) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-/* Падающий пепел для плохой концовки */
-.ending-effects.ash {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 999;
-}
-
-.ash-particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: #666;
-    border-radius: 50%;
-    animation: ash-fall 4s linear infinite;
-}
-
-@keyframes ash-fall {
-    0% {
-        transform: translateY(-100px) translateX(0);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100vh) translateX(20px);
-        opacity: 0;
-    }
-}
-
-/* Парящие символы для секретной концовки */
-.ending-effects.symbols {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 999;
-}
-
-.floating-symbol {
-    position: absolute;
-    font-size: 2em;
-    color: rgba(186, 104, 200, 0.7);
-    animation: float 4s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0.7;
-    }
-    50% {
-        transform: translateY(-20px) rotate(180deg);
-        opacity: 1;
-    }
 }
 
 /* Специальные стили для текста концовок */

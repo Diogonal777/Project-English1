@@ -28,13 +28,14 @@
 <div id="game-container" class="hidden">
     <div id="game-container">
         <!-- Заголовок и прогресс -->
-        <header id="game-header">
-            <h1 id="scene-title">Интерактивныя истории</h1>
+        <div id="game-header">
+            <button id="return-to-menu" class="menu-btn">← В меню</button>
+            <h1 id="scene-title">Интерактивная история</h1>
             <div id="game-stats">
                 <span id="inventory">Инвентарь: пусто</span>
                 <span id="visited-count">Посещено: 0 мест</span>
             </div>
-        </header>
+        </div>
 
         <!-- Основное содержимое сцены -->
         <main id="scene-content">
@@ -56,8 +57,14 @@
 
         <!-- История посещений -->
         <aside id="history-sidebar">
-            <h4>Путешествие:</h4>
+            <h4>Прогресс</h4>
             <div id="visited-scenes"></div>
+            
+            <h4>Концовки</h4>
+            <div id="endings-list"></div>
+            
+            <h4>Достижения</h4>
+            <div id="achievements-list"></div>
         </aside>
     </div>
 

@@ -1,4 +1,5 @@
 {
+  "storyName": "Затеренный остров",
   "start": {
     "title": "Берег",
     "text": "Ты просыпаешься на песчаном берегу. Солёная вода щиплет раны на лице. В памяти лишь обрывки: шторм, крики, тонущий корабль. Перед тобой простирается незнакомый тропический остров с густыми джунгями и высокими горами вдали. Волны приносят обломки корабля.",
@@ -26,7 +27,7 @@
     "choices": [
       {
         "text": "Взять нож и банки",
-        "effect": "add_knife, add_cans",
+        "effect": ["add_knife", "add_cans"],
         "next": "start"
       },
       {
@@ -43,7 +44,7 @@
     "choices": [
       {
         "text": "Взять аптечку и журнал",
-        "effect": "add_medkit, add_map",
+        "effect": ["add_medkit", "add_map"],
         "next": "start"
       }
     ]
@@ -273,7 +274,7 @@
     "choices": [
       {
         "text": "Взять меч и свиток",
-        "effect": "add_sword, add_scroll",
+        "effect": ["add_sword", "add_scroll"],
         "next": "temple_illuminated"
       }
     ]
@@ -458,6 +459,10 @@
       {
         "text": "Исследовать новые руины",
         "next": "ancient_observatory"
+      },
+      {
+        "text": "Вернутся назад",
+        "next": "stone_path"
       }
     ]
   },

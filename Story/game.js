@@ -8,22 +8,22 @@ class StoryGame {
         this.achievements = new Set();
         this.currentTheme = 'default';
         this.gameConfig = null;
+        this.completedEndings = new Set();
+        this.possibleEndings = new Set();
+        this.totalScenes = 0;
     }
 
     async init() {
-        //
         await this.loadgameConfig();
-        
-        // Загружаем историю из JSON
         await this.loadStory();
-        
-        // Восстанавливаем прогресс из localStorage
         this.loadProgress();
-        
-        // Показываем первую сцену
         this.showScene(this.currentScene);
+        document.getElementById('return-to-menu').addEventListener('click', () => {
+            if (window.storyGame) {
+                window.storyGame.returnToMenu();
+            }
+        });
         
-        // Сохраняем прогресс при закрытии страницы
         window.addEventListener('beforeunload', () => this.saveProgress());
     }
 
@@ -50,7 +50,7 @@ class StoryGame {
             this.storyName = data.storyName;
             delete data.storyName;
             this.storyData = data;
-            
+            this.calculateStoryStats();
             this.validateStory();
             
             console.log('История загружена:', this.storyName);
@@ -73,6 +73,9 @@ class StoryGame {
 
         const scene = this.storyData[sceneId];
         console.log('Текущая сцена:', sceneId);
+        if (scene.ending) {
+            this.completedEndings.add(sceneId);
+        }
         this.currentScene = sceneId;
         this.visitedScenes.add(sceneId);
         this.updateUI(scene);
@@ -84,9 +87,8 @@ class StoryGame {
         document.getElementById('game-container').classList.add('hidden');
         document.getElementById('story-selection').classList.add('active');
         
-        this.currentScene = 'start';
-        this.visitedScenes.clear();
-        this.inventory.clear();
+        this.setTheme('default');
+        //this.currentScene = 'start';
         this.saveProgress();
     }
 
@@ -208,17 +210,30 @@ class StoryGame {
 
 checkCondition(condition) {
     if (!condition) return true;
+    
+    // Если условие - массив, проверяем все условия
+    if (Array.isArray(condition)) {
+        return condition.every(cond => this.inventory.has(cond));
+    }
+    
+    // Если условие - строка, проверяем одно условие
     return this.inventory.has(condition);
-}
-
-showConditionMessage(condition) {
-    const message = this.gameConfig.conditionMessages[condition] || 'Не выполнено условие!';
-    this.showMessage(message);
 }
 
 applyEffect(effect) {
     if (!effect) return;
     
+    // Если эффект - массив, применяем все эффекты
+    if (Array.isArray(effect)) {
+        effect.forEach(eff => this.applySingleEffect(eff));
+        return;
+    }
+    
+    // Если эффект - строка, применяем один эффект
+    this.applySingleEffect(effect);
+}
+
+applySingleEffect(effect) {
     const effectData = this.gameConfig.effectMessages[effect];
     if (effectData) {
         const [item, message] = effectData;
@@ -233,6 +248,23 @@ applyEffect(effect) {
     }
 }
 
+showConditionMessage(condition) {
+    let message = '';
+    
+    // Если условие - массив, показываем сообщение для первого отсутствующего предмета
+    if (Array.isArray(condition)) {
+        const missingItem = condition.find(item => !this.inventory.has(item));
+        if (missingItem) {
+            message = this.gameConfig.conditionMessages[missingItem] || `Нужен предмет: ${missingItem}`;
+        }
+    } else {
+        // Если условие - строка
+        message = this.gameConfig.conditionMessages[condition] || 'Не выполнено условие!';
+    }
+    
+    this.showMessage(message);
+}
+
 updateStats() {
     const inventoryList = Array.from(this.inventory)
         .map(item => this.gameConfig.itemDisplayNames[item] || item)
@@ -241,8 +273,7 @@ updateStats() {
     const inventoryText = inventoryList ? `Инвентарь: ${inventoryList}` : 'Инвентарь: пусто';
     document.getElementById('inventory').textContent = inventoryText;
     
-    document.getElementById('visited-count').textContent = 
-        `Посещено: ${this.visitedScenes.size} мест`;
+    this.updateProgressDisplay();
 }
 
     updateHistory() {
@@ -289,29 +320,117 @@ showMessage(text) {
     }, 3000);
 }
 
+calculateStoryStats() {
+    this.totalScenes = Object.keys(this.storyData).length;
+    this.possibleEndings = new Set();
+    
+    for (const sceneId in this.storyData) {
+        const scene = this.storyData[sceneId];
+        if (scene.ending) {
+            this.possibleEndings.add(sceneId);
+        }
+    }
+}
+
+calculateProgress() {
+    const visitedPercentage = this.totalScenes > 0 ? 
+        (this.visitedScenes.size / this.totalScenes) * 100 : 0;
+    
+    const endingsPercentage = this.possibleEndings.size > 0 ? 
+        (this.completedEndings.size / this.possibleEndings.size) * 100 : 0;
+    
+    const achievementsPercentage = this.achievements.size > 0 ? 
+        (this.achievements.size / this.achievements.size) * 100 : 0;
+    
+    const totalPercentage = (visitedPercentage + endingsPercentage + achievementsPercentage) / 3;
+    
+    return {
+        total: Math.round(totalPercentage),
+        visited: this.visitedScenes.size,
+        totalScenes: this.totalScenes,
+        completedEndings: this.completedEndings.size,
+        totalEndings: this.possibleEndings.size,
+        achievements: this.achievements.size
+    };
+}
+
+updateProgressDisplay() {
+    const progress = this.calculateProgress();
+    
+    document.getElementById('visited-count').textContent = 
+        `Прогресс: ${progress.total}% (${progress.visited}/${progress.totalScenes} сцен)`;
+    
+    this.updateEndingsList();
+    this.updateAchievementsList();
+}
+
+updateEndingsList() {
+    const container = document.getElementById('endings-list');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    this.possibleEndings.forEach(endingId => {
+        const ending = this.storyData[endingId];
+        const isCompleted = this.completedEndings.has(endingId);
+        
+        const endingElement = document.createElement('div');
+        endingElement.className = `ending-item ${isCompleted ? 'completed' : 'locked'}`;
+        endingElement.innerHTML = `
+            <span class="ending-status">${isCompleted ? '✓' : '✗'}</span>
+            <span class="ending-title">${ending.title}</span>
+        `;
+        
+        container.appendChild(endingElement);
+    });
+}
+
+updateAchievementsList() {
+    const container = document.getElementById('achievements-list');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    this.achievements.forEach(achievement => {
+        const achievementElement = document.createElement('div');
+        achievementElement.className = 'achievement-item';
+        achievementElement.textContent = achievement;
+        container.appendChild(achievementElement);
+    });
+    
+    if (this.achievements.size === 0) {
+        const emptyElement = document.createElement('div');
+        emptyElement.className = 'achievement-item';
+        emptyElement.textContent = 'Пока нет достижений';
+        container.appendChild(emptyElement);
+    }
+}
+
 saveProgress() {
-    const progress = {
+    const progressData = {
         storyId: this.storyId,
         currentScene: this.currentScene,
         visitedScenes: Array.from(this.visitedScenes),
         inventory: Array.from(this.inventory),
         achievements: Array.from(this.achievements),
-        currentTheme: this.currentTheme
+        currentTheme: this.currentTheme,
+        completedEndings: Array.from(this.completedEndings)
     };
-    localStorage.setItem('storyGameProgress', JSON.stringify(progress));
+    localStorage.setItem('storyGameProgress', JSON.stringify(progressData));
 }
 
 loadProgress() {
     const saved = localStorage.getItem('storyGameProgress');
     if (saved) {
         try {
-            const progress = JSON.parse(saved);
-            if (progress.storyId === this.storyId) {
-                this.currentScene = progress.currentScene || 'start';
-                this.visitedScenes = new Set(progress.visitedScenes || []);
-                this.inventory = new Set(progress.inventory || []);
-                this.achievements = new Set(progress.achievements || []);
-                this.currentTheme = progress.currentTheme || 'default';
+            const progressData = JSON.parse(saved);
+            if (progressData.storyId === this.storyId) {
+                this.currentScene = progressData.currentScene || 'start';
+                this.visitedScenes = new Set(progressData.visitedScenes || []);
+                this.inventory = new Set(progressData.inventory || []);
+                this.achievements = new Set(progressData.achievements || []);
+                this.currentTheme = progressData.currentTheme || 'default';
+                this.completedEndings = new Set(progressData.completedEndings || []);
             }
         } catch (e) {
             console.error('Ошибка загрузки прогресса:', e);
