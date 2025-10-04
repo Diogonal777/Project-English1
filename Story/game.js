@@ -11,6 +11,7 @@ class StoryGame {
         this.completedEndings = new Set();
         this.possibleEndings = new Set();
         this.totalScenes = 0;
+        this.backgroundMusic = null;
     }
 
     async init() {
@@ -18,6 +19,7 @@ class StoryGame {
         await this.loadStory();
         this.loadProgress();
         this.showScene(this.currentScene);
+        this.playBackgroundMusic();
         document.getElementById('return-to-menu').addEventListener('click', () => {
             if (window.storyGame) {
                 window.storyGame.returnToMenu();
@@ -63,19 +65,29 @@ class StoryGame {
 
     showScene(sceneId) {
         if (sceneId === 'menu') {
+            this.stopBackgroundMusic();
             this.returnToMenu();
             return;
         }
+        
         if (!this.storyData || !this.storyData[sceneId]) {
             console.error('Сцена не найдена:', sceneId);
             return;
         }
-
+        
         const scene = this.storyData[sceneId];
         console.log('Текущая сцена:', sceneId);
+        
+        if (scene.ending) {
+            this.stopBackgroundMusic();
+        } else if (sceneId === 'start') {
+            this.playBackgroundMusic();
+        }
+        
         if (scene.ending) {
             this.completedEndings.add(sceneId);
         }
+        
         this.currentScene = sceneId;
         this.visitedScenes.add(sceneId);
         this.updateUI(scene);
@@ -84,6 +96,7 @@ class StoryGame {
     }
 
     returnToMenu() {
+        this.stopBackgroundMusic();
         document.getElementById('game-container').classList.add('hidden');
         document.getElementById('story-selection').classList.add('active');
         
@@ -175,7 +188,7 @@ class StoryGame {
         // Здесь можно добавить звуковые эффекты
         console.log(`Воспроизведение звука для темы: ${theme}`);
         // На практике можно использовать:
-        const audio = new Audio(`assets/sounds/${theme}_ending.mp3`);
+        const audio = new Audio(`assets/sounds/ending_${theme}.mp3`);
         audio.play();
     }
     
@@ -207,6 +220,33 @@ class StoryGame {
             container.appendChild(button);
         });
     }
+
+playBackgroundMusic() {
+    if (!this.backgroundMusic) {
+        this.backgroundMusic = document.getElementById('background-music');
+    }
+    
+    try {
+        // Проверяем, не играет ли уже музыка
+        if (!this.backgroundMusic.paused) {
+            return;
+        }
+        
+        this.backgroundMusic.src = `assets/sounds/soundtrack_${this.storyId}.ogg`;
+        this.backgroundMusic.play().catch(e => {
+            console.log('Не удалось воспроизвести фоновую музыку:', e.message);
+        });
+    } catch (error) {
+        console.log('Ошибка загрузки фоновой музыки:', error);
+    }
+}
+
+stopBackgroundMusic() {
+    if (this.backgroundMusic) {
+        this.backgroundMusic.pause();
+        this.backgroundMusic.currentTime = 0;
+    }
+}
 
 checkCondition(condition) {
     if (!condition) return true;
@@ -446,6 +486,8 @@ loadProgress() {
         this.inventory.clear();
         this.achievements.clear();
         this.showScene('start');
+        this.stopBackgroundMusic();
+        this.playBackgroundMusic();
     }
 }
 

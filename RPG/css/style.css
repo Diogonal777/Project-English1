@@ -1,0 +1,716 @@
+/* Основные стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #e74c3c;
+    --secondary-color: #3498db;
+    --accent-color: #f39c12;
+    --dark-color: #2c3e50;
+    --light-color: #ecf0f1;
+    --success-color: #27ae60;
+    --warning-color: #e67e22;
+    --danger-color: #c0392b;
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: linear-gradient(135deg, #2c3e50, #4a235a);
+    color: var(--light-color);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Главное меню */
+.main-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.menu-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.title-section {
+    margin-bottom: 40px;
+}
+
+.game-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.game-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    font-weight: 300;
+}
+
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.menu-btn {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 500;
+}
+
+.menu-btn.primary {
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    color: white;
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+}
+
+.menu-btn.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--light-color);
+    border: 2px solid var(--primary-color);
+}
+
+.menu-btn.tertiary {
+    background: transparent;
+    color: var(--light-color);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.menu-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.menu-btn.primary:hover {
+    background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+}
+
+.menu-btn.secondary:hover {
+    background: rgba(231, 76, 60, 0.2);
+}
+
+/* Игровой экран */
+.game-screen {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+}
+
+.stats-panel {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    min-width: 200px;
+}
+
+.stat-bar {
+    margin-bottom: 15px;
+}
+
+.stat-bar label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.bar {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.honor-fill { background: linear-gradient(90deg, #e74c3c, #f39c12); }
+.wisdom-fill { background: linear-gradient(90deg, #3498db, #2ecc71); }
+.strength-fill { background: linear-gradient(90deg, #e67e22, #f1c40f); }
+.charm-fill { background: linear-gradient(90deg, #9b59b6, #e84393); }
+
+.stat-value {
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.karma-display {
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.karma-value {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.game-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-left: 240px;
+    margin-right: 20px;
+}
+
+.scene-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.7;
+    z-index: -1;
+}
+
+.scene-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 40px;
+    z-index: 10;
+}
+
+.dialogue-container {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+.character-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.dialogue-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    min-height: 120px;
+}
+
+.choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.choice-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--primary-color);
+    color: var(--light-color);
+    padding: 15px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    text-align: left;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+.choice-btn:hover {
+    background: rgba(231, 76, 60, 0.3);
+    transform: translateX(10px);
+    border-color: var(--accent-color);
+}
+
+.choice-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.choice-btn:disabled:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-color);
+    transform: none;
+}
+
+.control-panel {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+}
+
+.control-btn {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--light-color);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    font-size: 1.2rem;
+}
+
+.control-btn:hover {
+    background: rgba(231, 76, 60, 0.8);
+    transform: scale(1.1);
+}
+
+/* Модальные окна */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: rgba(44, 62, 80, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 90%;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.save-slots-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.save-slot-modal {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.save-slot-modal:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--primary-color);
+}
+
+.save-slot-modal.selected {
+    border-color: var(--accent-color);
+    background: rgba(243, 156, 18, 0.2);
+}
+
+.slot-title {
+    font-weight: bold;
+    display: block;
+}
+
+.slot-info {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* Достижения */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.achievement {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 2px solid transparent;
+}
+
+.achievement.unlocked {
+    border-color: var(--accent-color);
+    background: rgba(243, 156, 18, 0.1);
+}
+
+.achievement.locked {
+    opacity: 0.6;
+}
+
+.achievement-icon {
+    font-size: 2rem;
+}
+
+.achievement-info h4 {
+    margin-bottom: 5px;
+    color: var(--light-color);
+}
+
+.achievement-info p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.achievement-info small {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+}
+
+/* Утилиты */
+.hidden {
+    display: none !important;
+}
+
+.footer {
+    margin-top: 30px;
+    text-align: center;
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .stats-panel {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        margin: 20px;
+        width: calc(100% - 40px);
+    }
+    
+    .game-container {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .control-panel {
+        position: fixed;
+        bottom: 20px;
+        top: auto;
+        right: 20px;
+        transform: none;
+        flex-direction: row;
+    }
+    
+    .scene-content {
+        padding: 20px;
+    }
+    
+    .game-title {
+        font-size: 2.5rem;
+    }
+    
+    .menu-container {
+        padding: 20px;
+    }
+}
+
+/* Специфические стили для концовок */
+.ending-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px;
+    text-align: center;
+}
+
+.ending-title {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--accent-color);
+}
+
+.ending-description {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-bottom: 30px;
+}
+
+.ending-stats {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+}
+
+/* Дополнительные стили для новых функций */
+
+/* Большие модальные окна */
+.large-modal {
+    max-width: 600px;
+}
+
+/* Группы настроек */
+.setting-group {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.setting-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.range-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.range-value {
+    min-width: 40px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+/* Опасная зона */
+.danger-zone {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    border-radius: 10px;
+}
+
+.danger-zone h4 {
+    color: var(--danger-color);
+    margin-bottom: 10px;
+}
+
+.danger-zone small {
+    display: block;
+    margin-top: 5px;
+    opacity: 0.7;
+    font-size: 0.8rem;
+}
+
+/* Статистика истории */
+.history-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+/* Недавние действия */
+.recent-history {
+    margin: 20px 0;
+}
+
+.actions-list {
+    max-height: 200px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.action-item {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+}
+
+.action-item:last-child {
+    border-bottom: none;
+}
+
+.action-scene {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.action-choice {
+    opacity: 0.8;
+}
+
+/* Кнопки опасных действий */
+.menu-btn.danger {
+    background: linear-gradient(45deg, var(--danger-color), #e74c3c);
+    color: white;
+}
+
+.menu-btn.danger:hover {
+    background: linear-gradient(45deg, #c0392b, var(--danger-color));
+}
+
+/* Адаптивность для новых элементов */
+@media (max-width: 768px) {
+    .history-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .large-modal {
+        margin: 10px;
+        width: calc(100% - 20px);
+    }
+    
+    .range-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .range-value {
+        text-align: center;
+    }
+}
+
+/* Анимации для уведомлений */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification {
+    animation: slideInRight 0.3s ease-out;
+}
+
+/* Стили для выбора слотов */
+.save-slot-modal.has-save {
+    border-left: 4px solid var(--success-color);
+}
+
+.save-slot-modal.selected {
+    border: 2px solid var(--accent-color);
+    background: rgba(243, 156, 18, 0.1);
+}
+
+/* Прогресс-бары характеристик */
+.bar {
+    position: relative;
+    overflow: hidden;
+}
+
+.bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255,255,255,0.3) 50%, 
+        transparent 100%);
+    animation: shimmer 2s infinite;
+    opacity: 0;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
+}
+
+.stat-bar:hover .bar::after {
+    opacity: 1;
+}

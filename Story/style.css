@@ -5,12 +5,19 @@
 }
 
 body {
+    margin: 0;
     padding: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     color: #e6e6e6;
     line-height: 1.6;
     min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+#background-music {
+    display: none;
 }
 
 .story-selection {
@@ -128,29 +135,40 @@ body {
 
 
 #game-container {
-    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 300px;
+    grid-template-columns: minmax(0, 1fr) 300px;
     grid-template-rows: auto 1fr auto;
     gap: 20px;
     grid-template-areas:
-    "header header"
-    "content sidebar"
-    "choices sidebar";
+        "header header"
+        "content sidebar"
+        "choices sidebar";
     min-height: 90vh;
+    padding: 1%;
+    box-sizing: border-box;
+}
+
+@media (min-width: 1400px) {
+    #game-container {
+        max-width: 1400px;
+    }
 }
 
 #game-header {
     grid-area: header;
     background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
+    padding: 10px;
     border-radius: 15px;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 10px;
+    z-index: 100;
 }
 
 #scene-title {
@@ -172,6 +190,7 @@ body {
     border-radius: 15px;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 5px;
 }
 
 #scene-image-container {
@@ -260,7 +279,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     height: fit-content;
     position: sticky;
-    top: 20px;
+    top: 100px;
 }
 
 #history-sidebar h4 {
@@ -591,6 +610,23 @@ body.theme-secret {
     }
 }
 
+@media (max-width: 768px) {
+    #game-header {
+        position: static;
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    #history-sidebar {
+        position: static;
+    }
+    
+    #scene-content {
+        margin-top: 0;
+    }
+}
+
 /* Адаптивность для мобильных */
 @media (max-width: 768px) {
     #game-container {
@@ -612,7 +648,4 @@ body.theme-secret {
         justify-content: center;
     }
 
-    #history-sidebar {
-        position: static;
-    }
 }

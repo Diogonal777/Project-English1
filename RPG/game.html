@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Путь Самурая - Игра</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="game-screen">
+    <!-- Панель характеристик -->
+    <div class="stats-panel">
+        <div class="stat-bar">
+            <label>⚔️ Честь</label>
+            <div class="bar">
+                <div class="fill honor-fill" id="honor-bar" style="width: 50%"></div>
+            </div>
+            <span class="stat-value" id="honor-value">50</span>
+        </div>
+        <div class="stat-bar">
+            <label>📚 Мудрость</label>
+            <div class="bar">
+                <div class="fill wisdom-fill" id="wisdom-bar" style="width: 50%"></div>
+            </div>
+            <span class="stat-value" id="wisdom-value">50</span>
+        </div>
+        <div class="stat-bar">
+            <label>💪 Сила</label>
+            <div class="bar">
+                <div class="fill strength-fill" id="strength-bar" style="width: 50%"></div>
+            </div>
+            <span class="stat-value" id="strength-value">50</span>
+        </div>
+        <div class="stat-bar">
+            <label>🎭 Харизма</label>
+            <div class="bar">
+                <div class="fill charm-fill" id="charm-bar" style="width: 50%"></div>
+            </div>
+            <span class="stat-value" id="charm-value">50</span>
+        </div>
+        <div class="karma-display">
+            <span>Карма: </span>
+            <span id="karma-value" class="karma-value">0</span>
+        </div>
+    </div>
+
+    <!-- Основной игровой контейнер -->
+    <div class="game-container">
+        <!-- Фон сцены -->
+        <div class="scene-background" id="scene-background"></div>
+        
+        <!-- Контент сцены -->
+        <div class="scene-content">
+            <div class="dialogue-container">
+                <div class="character-name" id="character-name">Рассказчик</div>
+                <div class="dialogue-text" id="dialogue-text">
+                    Загрузка истории...
+                </div>
+            </div>
+            
+            <!-- Выбор действий -->
+            <div class="choices-container" id="choices-container">
+                <!-- Кнопки выбора будут генерироваться здесь -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Панель управления -->
+    <div class="control-panel">
+        <button id="save-game" class="control-btn" title="Сохранить игру (Ctrl+S)">💾</button>
+        <button id="load-game" class="control-btn" title="Загрузить игру">📁</button>
+        <button id="history-btn" class="control-btn" title="История и статистика">📊</button>
+        <button id="settings-btn" class="control-btn" title="Настройки">⚙️</button>
+        <button id="main-menu" class="control-btn" title="В главное меню">🏠</button>
+        <button id="toggle-stats" class="control-btn" title="Скрыть/показать статистику">📈</button>
+    </div>
+
+    <!-- Модальное окно сохранения -->
+    <div class="modal hidden" id="save-modal">
+        <div class="modal-content">
+            <h3>💾 Сохранить игру</h3>
+            <div class="save-slots-modal">
+                <div class="save-slot-modal" data-slot="1">
+                    <span class="slot-title">Слот 1</span>
+                    <span class="slot-info" id="slot-info-1">Пусто</span>
+                </div>
+                <div class="save-slot-modal" data-slot="2">
+                    <span class="slot-title">Слот 2</span>
+                    <span class="slot-info" id="slot-info-2">Пусто</span>
+                </div>
+                <div class="save-slot-modal" data-slot="3">
+                    <span class="slot-title">Слот 3</span>
+                    <span class="slot-info" id="slot-info-3">Пусто</span>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="confirm-save" class="menu-btn primary">Сохранить</button>
+                <button id="cancel-save" class="menu-btn tertiary">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно загрузки -->
+    <div class="modal hidden" id="load-modal">
+        <div class="modal-content">
+            <h3>📁 Загрузить игру</h3>
+            <div class="save-slots-modal">
+                <div class="save-slot-modal" data-slot="1">
+                    <span class="slot-title">Слот 1</span>
+                    <span class="slot-info">Пусто</span>
+                </div>
+                <div class="save-slot-modal" data-slot="2">
+                    <span class="slot-title">Слот 2</span>
+                    <span class="slot-info">Пусто</span>
+                </div>
+                <div class="save-slot-modal" data-slot="3">
+                    <span class="slot-title">Слот 3</span>
+                    <span class="slot-info">Пусто</span>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="confirm-load" class="menu-btn primary">Загрузить</button>
+                <button id="delete-save" class="menu-btn danger">Удалить</button>
+                <button id="cancel-load" class="menu-btn tertiary">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно истории -->
+    <div class="modal hidden" id="history-modal">
+        <div class="modal-content large-modal">
+            <h3>📊 История и статистика</h3>
+            <div class="history-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Посещено сцен:</span>
+                    <span class="stat-value" id="visited-scenes-count">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Принято решений:</span>
+                    <span class="stat-value" id="choices-made-count">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Открыто концовок:</span>
+                    <span class="stat-value" id="endings-unlocked-count">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Время игры:</span>
+                    <span class="stat-value" id="play-time">0 минут</span>
+                </div>
+            </div>
+            <div class="recent-history">
+                <h4>Последние действия</h4>
+                <div id="recent-actions-list" class="actions-list">
+                    <!-- История будет загружена здесь -->
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="export-history" class="menu-btn secondary">Экспорт</button>
+                <button id="close-history" class="menu-btn tertiary">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно настроек -->
+    <div class="modal hidden" id="settings-modal">
+        <div class="modal-content large-modal">
+            <h3>⚙️ Настройки</h3>
+            <form id="settings-form">
+                <div class="setting-group">
+                    <label>Громкость музыки:</label>
+                    <div class="range-container">
+                        <input type="range" name="musicVolume" min="0" max="100" value="50">
+                        <span class="range-value">50%</span>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label>Громкость звуков:</label>
+                    <div class="range-container">
+                        <input type="range" name="soundVolume" min="0" max="100" value="70">
+                        <span class="range-value">70%</span>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label>Скорость текста:</label>
+                    <div class="range-container">
+                        <input type="range" name="textSpeed" min="0" max="100" value="50">
+                        <span class="range-value">50%</span>
+                    </div>
+                </div>
+                <div class="setting-group checkbox-group">
+                    <label>
+                        <input type="checkbox" name="autoPlay" checked>
+                        Автопроигрывание
+                    </label>
+                </div>
+                <div class="setting-group checkbox-group">
+                    <label>
+                        <input type="checkbox" name="skipViewed" checked>
+                        Пропускать просмотренные сцены
+                    </label>
+                </div>
+            </form>
+            <div class="danger-zone">
+                <h4>Опасная зона</h4>
+                <button id="clear-data" class="menu-btn danger">Очистить все данные</button>
+                <small>Удалит все сохранения, достижения и настройки</small>
+            </div>
+            <div class="modal-buttons">
+                <button id="save-settings" class="menu-btn primary">Сохранить</button>
+                <button id="reset-settings" class="menu-btn secondary">Сбросить</button>
+                <button id="close-settings" class="menu-btn tertiary">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/story-data.js"></script>
+    <script src="js/save-system.js"></script>
+    <script src="js/history-system.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/game-engine.js"></script>
+</body>
+</html>

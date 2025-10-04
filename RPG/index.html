@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Путь Самурая - Визуальная Новелла</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="main-menu">
+    <div class="menu-container">
+        <div class="title-section">
+            <h1 class="game-title">⚔️ Путь Самурая</h1>
+            <p class="game-subtitle">Визуальная новелла с развитием персонажа</p>
+        </div>
+        
+        <div class="menu-options">
+            <button id="new-game" class="menu-btn primary">Новая игра</button>
+            <button id="load-game" class="menu-btn secondary">Загрузить игру</button>
+            <button id="achievements-btn" class="menu-btn secondary">Достижения</button>
+            <button id="settings" class="menu-btn tertiary">Настройки</button>
+        </div>
+        
+        <div class="save-slots hidden" id="save-slots">
+            <h3>Выберите слот для загрузки:</h3>
+            <div class="slot-container">
+                <div class="save-slot" data-slot="1">
+                    <span class="slot-title">Слот 1</span>
+                    <span class="slot-info">Пусто</span>
+                </div>
+                <div class="save-slot" data-slot="2">
+                    <span class="slot-title">Слот 2</span>
+                    <span class="slot-info">Пусто</span>
+                </div>
+                <div class="save-slot" data-slot="3">
+                    <span class="slot-title">Слот 3</span>
+                    <span class="slot-info">Пусто</span>
+                </div>
+            </div>
+            <button id="back-to-menu" class="menu-btn tertiary">Назад</button>
+        </div>
+
+        <div class="achievements-menu hidden" id="achievements-menu">
+            <h3>Достижения</h3>
+            <div class="achievements-grid" id="achievements-grid">
+                <!-- Achievements will be loaded here -->
+            </div>
+            <button id="back-to-menu-achievements" class="menu-btn tertiary">Назад</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Сделано с ❤️ для интерактивных историй</p>
+    </div>
+
+    <script src="js/save-system.js"></script>
+    <script>
+        document.getElementById('new-game').addEventListener('click', () => {
+            window.location.href = 'game.html';
+        });
+
+        document.getElementById('load-game').addEventListener('click', () => {
+            document.getElementById('save-slots').classList.remove('hidden');
+            document.querySelector('.menu-options').classList.add('hidden');
+            loadSaveSlots();
+        });
+
+        document.getElementById('achievements-btn').addEventListener('click', () => {
+            document.getElementById('achievements-menu').classList.remove('hidden');
+            document.querySelector('.menu-options').classList.add('hidden');
+            loadAchievements();
+        });
+
+        document.getElementById('back-to-menu').addEventListener('click', () => {
+            document.getElementById('save-slots').classList.add('hidden');
+            document.querySelector('.menu-options').classList.remove('hidden');
+        });
+
+        document.getElementById('back-to-menu-achievements').addEventListener('click', () => {
+            document.getElementById('achievements-menu').classList.add('hidden');
+            document.querySelector('.menu-options').classList.remove('hidden');
+        });
+
+        function loadSaveSlots() {
+            const slots = document.querySelectorAll('.save-slot');
+            slots.forEach(slot => {
+                const slotNum = slot.getAttribute('data-slot');
+                const saveData = SaveSystem.loadGame(slotNum);
+                
+                if (saveData) {
+                    const date = new Date(saveData.timestamp).toLocaleDateString();
+                    slot.querySelector('.slot-info').textContent = 
+                        `Сцена: ${saveData.currentScene} | ${date}`;
+                    slot.classList.add('has-save');
+                    
+                    slot.addEventListener('click', () => {
+                        SaveSystem.loadIntoGame(slotNum);
+                        window.location.href = 'game.html';
+                    });
+                } else {
+                    slot.addEventListener('click', () => {
+                        alert('Этот слот пуст!');
+                    });
+                }
+            });
+        }
+
+        function loadAchievements() {
+            const grid = document.getElementById('achievements-grid');
+            const achievements = SaveSystem.getAchievements();
+            
+            grid.innerHTML = '';
+            achievements.forEach(ach => {
+                const achievementEl = document.createElement('div');
+                achievementEl.className = `achievement ${ach.unlocked ? 'unlocked' : 'locked'}`;
+                achievementEl.innerHTML = `
+                    <div class="achievement-icon">${ach.unlocked ? '🏆' : '🔒'}</div>
+                    <div class="achievement-info">
+                        <h4>${ach.name}</h4>
+                        <p>${ach.description}</p>
+                        ${ach.unlocked ? `<small>Получено: ${new Date(ach.unlockedAt).toLocaleDateString()}</small>` : ''}
+                    </div>
+                `;
+                grid.appendChild(achievementEl);
+            });
+        }
+    </script>
+</body>
+</html>
