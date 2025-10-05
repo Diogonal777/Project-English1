@@ -12,6 +12,7 @@ class StoryGame {
         this.possibleEndings = new Set();
         this.totalScenes = 0;
         this.backgroundMusic = null;
+        this.activeEffects = [];
     }
 
     async init() {
@@ -88,6 +89,7 @@ class StoryGame {
             this.completedEndings.add(sceneId);
         }
         
+        this.clearActiveEffects();
         this.currentScene = sceneId;
         this.visitedScenes.add(sceneId);
         this.updateUI(scene);
@@ -97,12 +99,14 @@ class StoryGame {
 
     returnToMenu() {
         this.stopBackgroundMusic();
+        this.clearActiveEffects();
         document.getElementById('game-container').classList.add('hidden');
         document.getElementById('story-selection').classList.add('active');
         
-        this.setTheme('default');
         //this.currentScene = 'start';
         this.saveProgress();
+        this.setTheme('default');
+        this.currentScene = 'start';
     }
 
     updateUI(scene) {
@@ -163,30 +167,181 @@ class StoryGame {
         
         this.saveProgress();
     }
+
+showEndingEffects(scene) {
+    const theme = scene.theme || 'neutral';
     
-    showEndingEffects(scene) {
-        const theme = scene.theme || 'neutral';
-        
-        switch(theme) {
-            case 'good':
-                break;
-            case 'bad':
-                break;
-            case 'secret':
-                break;
-        }
-        
-        if (scene.achievement && !this.achievements.has(scene.achievement)) {
-            this.achievements.add(scene.achievement);
-            this.showAchievement(scene.achievement);
-        }
-        
-        this.playEndingSound(theme);
+    switch(theme) {
+        case 'good':
+            this.createGoodEndingEffects();
+            break;
+        case 'bad':
+            this.createBadEndingEffects();
+            break;
+        case 'secret':
+            this.createSecretEndingEffects();
+            break;
+        case 'neutral':
+            this.createNeutralEndingEffects();
+            break;
     }
+    
+    if (scene.achievement && !this.achievements.has(scene.achievement)) {
+        this.achievements.add(scene.achievement);
+        this.showAchievement(scene.achievement);
+    }
+    
+    this.playEndingSound(theme);
+}
+
+createGoodEndingEffects() {
+    this.createSparkles();
+    this.createConfetti();
+}
+
+createBadEndingEffects() {
+    this.createSmoke();
+    this.createBloodDrops();
+}
+
+createSecretEndingEffects() {
+    this.createOrbs();
+    this.createGlowParticles();
+}
+
+createNeutralEndingEffects() {
+    this.createFloatingBubbles();
+}
+
+createSparkles() {
+    const container = document.createElement('div');
+    container.className = 'ending-effects sparkles';
+    document.body.appendChild(container);
+    
+    for (let i = 0; i < 25; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = `${Math.random() * 100}%`;
+        sparkle.style.animationDelay = `${Math.random() * 2}s`;
+        container.appendChild(sparkle);
+    }
+    
+    setTimeout(() => container.remove(), 5000);
+}
+
+createConfetti() {
+    const container = document.createElement('div');
+    container.className = 'ending-effects confetti';
+    document.body.appendChild(container);
+    
+    const colors = ['#4caf50', '#2196f3', '#ffeb3b', '#e91e63', '#9c27b0'];
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti-piece';
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = `${Math.random() * 3}s`;
+        container.appendChild(confetti);
+    }
+    
+    setTimeout(() => container.remove(), 4000);
+}
+
+createSmoke() {
+    const container = document.createElement('div');
+    container.className = 'ending-effects smoke';
+    document.body.appendChild(container);
+    
+    for (let i = 0; i < 15; i++) {
+        const smoke = document.createElement('div');
+        smoke.className = 'smoke-particle';
+        smoke.style.left = `${Math.random() * 100}%`;
+        smoke.style.animationDelay = `${Math.random() * 4}s`;
+        container.appendChild(smoke);
+    }
+    
+    setTimeout(() => container.remove(), 6000);
+}
+
+createBloodDrops() {
+    const container = document.createElement('div');
+    container.className = 'ending-effects blood';
+    document.body.appendChild(container);
+    
+    for (let i = 0; i < 12; i++) {
+        const blood = document.createElement('div');
+        blood.className = 'blood-drop';
+        blood.style.left = `${Math.random() * 100}%`;
+        blood.style.animationDelay = `${Math.random() * 2}s`;
+        container.appendChild(blood);
+    }
+    
+    setTimeout(() => container.remove(), 4000);
+}
+
+createOrbs() {
+    const container = document.createElement('div');
+    container.className = 'ending-effects orbs';
+    document.body.appendChild(container);
+    this.activeEffects.push(container);
+    
+    for (let i = 0; i < 8; i++) {
+        const orb = document.createElement('div');
+        orb.className = 'orb';
+        orb.style.left = `${20 + i * 10}%`;
+        orb.style.animationDelay = `${i * 0.7}s`;
+        container.appendChild(orb);
+    }
+    
+    //setTimeout(() => container.remove(), 5000);
+}
+
+createGlowParticles() {
+    const container = document.createElement('div');
+    container.className = 'ending-effects glow-particles';
+    document.body.appendChild(container);
+    this.activeEffects.push(container);
+    
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'glow-particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 3}s`;
+        container.appendChild(particle);
+    }
+    
+    //setTimeout(() => container.remove(), 5000);
+}
+
+createFloatingBubbles() {
+    const container = document.createElement('div');
+    container.className = 'ending-effects bubbles';
+    document.body.appendChild(container);
+    
+    for (let i = 0; i < 15; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.style.left = `${Math.random() * 100}%`;
+        bubble.style.animationDelay = `${Math.random() * 3}s`;
+        container.appendChild(bubble);
+    }
+    
+    setTimeout(() => container.remove(), 5000);
+}
+
+clearActiveEffects() {
+    this.activeEffects.forEach(container => {
+        if (container && container.parentNode) {
+            container.remove();
+        }
+    });
+    this.activeEffects = [];
+}
     
     playEndingSound(theme) {
         // Здесь можно добавить звуковые эффекты
-        console.log(`Воспроизведение звука для темы: ${theme}`);
+        console.log(`Воспроизведение звука для концовки: ${theme}`);
         // На практике можно использовать:
         const audio = new Audio(`assets/sounds/ending_${theme}.mp3`);
         audio.play();
@@ -516,5 +671,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm('Сбросить весь прогресс?')) {
             window.storyGame.resetProgress();
         }
+    });
+    
+    // Обработчик двойного клика на заголовок для показа скрытых кнопок
+    document.getElementById('story-title').addEventListener('dblclick', function() {
+        const hiddenButtons = document.querySelectorAll('.story-buttons .story-btn.hidden');
+        alert('Дополнительные сценарии теперь доступны!');
+        hiddenButtons.forEach(button => {
+            button.classList.remove('hidden');
+        });
     });
 });

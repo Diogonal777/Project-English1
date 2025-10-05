@@ -1,0 +1,105 @@
+{
+  "storyName": "Отладочный сценарий",
+  "start": {
+    "title": "Начальная сцена",
+    "text": "Отладочный сценарий",
+    "choices": [
+      {
+        "text": "Хорощая концовка",
+        "next": "good_ending"
+      },
+      {
+        "text": "Плохая концовка",
+        "next": "bad_ending"
+      },
+      {
+        "text": "Секретная концовка",
+        "next": "secret_ending"
+      },
+      {
+        "text": "2 ачивки",
+        "next": "achievements"
+      },
+      {
+        "text": "Добавить 2 предмета",
+        "effect": ["add_key", "add_password"],
+        "next": "test"
+      },
+      {
+        "text": "Удалить 2 предмета",
+        "effect": ["remove_key", "remove_password"],
+        "next": "test"
+      },
+      {
+        "text": "2 условия",
+        "condition": ["key", "password"],
+        "next": "test"
+      }
+    ]
+  },
+
+  "test": {
+    "title": "Тестовая сцена",
+    "text": "Тестовая сцена",
+    "choices": [
+      {
+        "text": "Вернутся",
+        "next": "start"
+      }
+    ]
+  },
+
+  "achievements": {
+    "title": "Тестовая сцена",
+    "text": "2 ачивки",
+    "achievement": ["1 ачивка", "2 ачивка"],
+    "choices": [
+      {
+        "text": "Вернутся",
+        "next": "start"
+      }
+    ]
+  },
+
+  "good_ending": {
+    "title": "Хорошая концовка",
+    "text": "Хорошая концовка",
+    "theme": "good",
+    "ending": true,
+    "achievement": "Хорошая концовка",
+    "choices": [
+      {
+        "text": "Вернутся",
+        "next": "start"
+      }
+    ]
+  },
+
+  "bad_ending": {
+    "title": "Плохая концовка",
+    "text": "Плохая концовка",
+    "theme": "bad",
+    "ending": true,
+    "achievement": "Плохая концовка",
+    "choices": [
+      {
+        "text": "Вернутся",
+        "next": "start"
+      }
+    ]
+  },
+
+  "secret_ending": {
+    "title": "Секретная концовка",
+    "text": "Секретная концовка",
+    "theme": "secret",
+    "ending": true,
+    "achievement": "Секретная концовка",
+    "choices": [
+      {
+        "text": "Вернутся",
+        "next": "start"
+      }
+    ]
+  }
+}
