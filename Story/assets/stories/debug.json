@@ -17,6 +17,10 @@
         "next": "secret_ending"
       },
       {
+        "text": "Нейтральная концовка",
+        "next": "neutral_ending"
+      },
+      {
         "text": "2 ачивки",
         "next": "achievements"
       },
@@ -95,6 +99,20 @@
     "theme": "secret",
     "ending": true,
     "achievement": "Секретная концовка",
+    "choices": [
+      {
+        "text": "Вернутся",
+        "next": "start"
+      }
+    ]
+  },
+
+  "neutral_ending": {
+    "title": "Нейтральная концовка",
+    "text": "Нейтральная концовка",
+    "theme": "neutral",
+    "ending": true,
+    "achievement": "Нейтральная концовка",
     "choices": [
       {
         "text": "Вернутся",

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Кинокаталог</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Мой Кинокаталог</h1>
+            <div class="export-import-buttons">
+                <button id="exportBtn" class="export-btn">📤 Экспорт данных</button>
+                <button id="importBtn" class="import-btn">📥 Импорт данных</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+            </div>
+        </header>
+
+        <div class="categories-panel">
+            <div class="category-buttons">
+                <button class="category-btn active" data-category="movies">🎭 Фильмы</button>
+                <button class="category-btn" data-category="cartoons">🐰 Мультфильмы</button>
+                <button class="category-btn" data-category="series">📺 Сериалы</button>
+            </div>
+            <button class="add-btn" id="showFormBtn">+ Добавить</button>
+        </div>
+
+        <div class="add-form hidden" id="addForm">
+            <h3>Добавить запись</h3>
+            <form id="itemForm">
+                <input type="text" id="titleInput" placeholder="Название *" required>
+                
+                <select id="typeSelect" required>
+                    <option value="">Выберите тип *</option>
+                    <option value="movies">Фильм</option>
+                    <option value="cartoons">Мультфильм</option>
+                    <option value="series">Сериал</option>
+                </select>
+                
+                <div class="rating-input">
+                    <label for="ratingInput">Оценка (0-10) *</label>
+                    <input type="number" id="ratingInput" min="0" max="10" step="0.5" placeholder="7.5" required>
+                </div>
+                
+                <div class="date-input">
+                    <label for="dateInput">Дата просмотра:</label>
+                    <input type="date" id="dateInput">
+                    <small>Оставьте пустым для текущей даты</small>
+                </div>
+                
+                <textarea id="commentInput" placeholder="Комментарий (необязательно)"></textarea>
+                
+                <div class="form-actions">
+                    <button type="submit">Сохранить</button>
+                    <button type="button" id="cancelBtn">Отмена</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="content-area">
+            <div class="list-header">
+                <h2 id="currentCategory">Фильмы</h2>
+                <div class="sort-controls">
+                    <select id="sortSelect">
+                        <option value="date-desc">По дате (новые)</option>
+                        <option value="date-asc">По дате (старые)</option>
+                        <option value="rating-desc">По оценке (высокая)</option>
+                        <option value="rating-asc">По оценке (низкая)</option>
+                        <option value="title-asc">По названию (А-Я)</option>
+                        <option value="title-desc">По названию (Я-А)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="items-table">
+                <div class="table-header">
+                    <div class="col-title">Название</div>
+                    <div class="col-rating">Оценка</div>
+                    <div class="col-date">Дата</div>
+                    <div class="col-comment">Комментарий</div>
+                    <div class="col-actions">Действия</div>
+                </div>
+                <div class="items-list" id="itemsList">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -697,21 +697,6 @@ body.theme-secret {
     animation: gentlePulse 3s ease-in-out infinite;
 }
 
-.orb {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #ba68c8, #7b1fa2);
-    animation: orb-float 5s ease-in-out infinite;
-    box-shadow: 0 0 20px #ba68c8;
-}
-
-@keyframes orb-float {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-50px) scale(1.2); }
-}
-
 .glow-particle {
     position: absolute;
     width: 8px;

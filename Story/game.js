@@ -205,7 +205,6 @@ createBadEndingEffects() {
 }
 
 createSecretEndingEffects() {
-    this.createOrbs();
     this.createGlowParticles();
 }
 
@@ -279,23 +278,6 @@ createBloodDrops() {
     setTimeout(() => container.remove(), 4000);
 }
 
-createOrbs() {
-    const container = document.createElement('div');
-    container.className = 'ending-effects orbs';
-    document.body.appendChild(container);
-    this.activeEffects.push(container);
-    
-    for (let i = 0; i < 8; i++) {
-        const orb = document.createElement('div');
-        orb.className = 'orb';
-        orb.style.left = `${20 + i * 10}%`;
-        orb.style.animationDelay = `${i * 0.7}s`;
-        container.appendChild(orb);
-    }
-    
-    //setTimeout(() => container.remove(), 5000);
-}
-
 createGlowParticles() {
     const container = document.createElement('div');
     container.className = 'ending-effects glow-particles';
@@ -343,7 +325,7 @@ clearActiveEffects() {
         // Здесь можно добавить звуковые эффекты
         console.log(`Воспроизведение звука для концовки: ${theme}`);
         // На практике можно использовать:
-        const audio = new Audio(`assets/sounds/ending_${theme}.mp3`);
+        const audio = new Audio(`assets/sounds/ending_${theme}.ogg`);
         audio.play();
     }
     
